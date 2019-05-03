@@ -1,2 +1,2 @@
 # UpdateINI
-update an ini file
+Update an INI file
