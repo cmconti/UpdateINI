@@ -7,7 +7,6 @@
 void Usage()
 {
     printf("UpdateINI -s \"Section\" \"Key\" \"Value\" \"File\"\n");
-    printf("NOTE that the -e, -c, and -i options are no longer supported.\n");
     printf("\n");
 }
 
@@ -15,35 +14,12 @@ int _tmain(int argc, _TCHAR* argv[])
 {
     cmdCommandLine Params(argc, argv);
 
-    bool bSet = false, bGetNext = false;
-    int nSwitchS = 0, nSwitchN = 0, nSwitchC = 0, nSwitchE = 0, nSwitchI = 0;
+    bool bSet = false;
+    int nSwitchS = 0;
 
     //set
     if( Params.bGetFlag( ( nSwitchS = Params.iFindFlag( 's' ) ) )|| Params.bGetFlag( ( nSwitchS = Params.iFindFlag( 'S' ) ) ))
         bSet = true;
-
-    if( Params.bGetFlag( ( nSwitchE = Params.iFindFlag( 'e' ) ) )|| Params.bGetFlag( ( nSwitchE = Params.iFindFlag( 'E' ) ) ))
-    {
-        Usage();
-        return -1;
-    }
-
-    if( Params.bGetFlag( ( nSwitchC = Params.iFindFlag( 'c' ) ) )|| Params.bGetFlag( ( nSwitchC = Params.iFindFlag( 'C' ) ) ))
-    {
-        Usage();
-        return -1;
-    }
-
-    if( Params.bGetFlag( ( nSwitchI = Params.iFindFlag( 'i' ) ) )|| Params.bGetFlag( ( nSwitchI = Params.iFindFlag( 'I' ) ) ))
-    {
-        Usage();
-        return -1;
-    }
-
-    //not impl
-    //get next
-    if( Params.bGetFlag( ( nSwitchN = Params.iFindFlag( 'n' ) ) )|| Params.bGetFlag( ( nSwitchN = Params.iFindFlag( 'N' ) ) ))
-        bGetNext = true;
 
     if (bSet)
     {
@@ -76,7 +52,9 @@ int _tmain(int argc, _TCHAR* argv[])
         }
     }
     else
+    {
         Usage();
+    }
 
     return 0;
 }
