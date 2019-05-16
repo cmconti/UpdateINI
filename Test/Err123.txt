@@ -1,0 +1,1 @@
+WritePrivateProfileString failed.  GLE=123
