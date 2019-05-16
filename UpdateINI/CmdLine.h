@@ -38,7 +38,7 @@ public:
     // Public Methods
     int iFindFlag( _TCHAR cFlag );
     BOOL bGetFlag( int FlagID );
-    char cCurrentFlag() { return afFlagArray[ iCurrentFlag ]->GetFlag(); }
+    _TCHAR cCurrentFlag() { return afFlagArray[ iCurrentFlag ]->GetFlag(); }
     _TCHAR *cpNextFlagParam( );
 
 private:

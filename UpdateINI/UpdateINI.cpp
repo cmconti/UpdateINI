@@ -6,9 +6,11 @@
 
 void Usage()
 {
-    printf("UpdateINI -s \"Section\" \"Key\" \"Value\" \"File\"\n");
-    printf("\n");
+    _tprintf(_T("UpdateINI -s \"Section\" \"Key\" \"Value\" \"File\"\n"));
+    _tprintf(_T("\n"));
 }
+
+//bool InitializeEmptyUnicodeINIFile(LPCSTR pszFileName);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -19,22 +21,18 @@ int _tmain(int argc, _TCHAR* argv[])
 
     //set
     if( Params.bGetFlag( ( nSwitchS = Params.iFindFlag( 's' ) ) )|| Params.bGetFlag( ( nSwitchS = Params.iFindFlag( 'S' ) ) ))
+    {
         bSet = true;
+    }
 
     if (bSet)
     {
-        BOOL bRet = 0;
-        TCHAR* pszSection;
-        TCHAR* pszKey;
-        TCHAR* pszValue;
-        TCHAR* pszFile;
-
         Params.bGetFlag( nSwitchS );
 
-        pszSection = Params.cpNextFlagParam();
-        pszKey = Params.cpNextFlagParam();
-        pszValue = Params.cpNextFlagParam();
-        pszFile = Params.cpNextFlagParam();
+        TCHAR* pszSection = Params.cpNextFlagParam();
+        TCHAR* pszKey = Params.cpNextFlagParam();
+        TCHAR* pszValue = Params.cpNextFlagParam();
+        TCHAR* pszFile = Params.cpNextFlagParam();
 
         if (!pszSection || !pszKey || !pszValue || !pszFile)
         {
@@ -42,12 +40,15 @@ int _tmain(int argc, _TCHAR* argv[])
             return -1;
         }
 
-        bRet = ::WritePrivateProfileString(pszSection, pszKey, pszValue, pszFile);
+        //TODO: Should I be 'smart' here and try to figure out if the section/key/value are unicode,
+        //      make that a command line parameter option, or something else?
+        //bool bInitialized = InitializeEmptyUnicodeINIFile(pszFile)
+        BOOL bRet = ::WritePrivateProfileString(pszSection, pszKey, pszValue, pszFile);
 
         if (!bRet)
         {
             DWORD dwRet = ::GetLastError();
-            printf("WritePrivateProfileString failed.  GLE=%u\n", dwRet);
+            _tprintf(_T("WritePrivateProfileString failed.  GLE=%u\n"), dwRet);
             return dwRet;
         }
     }
@@ -59,3 +60,26 @@ int _tmain(int argc, _TCHAR* argv[])
     return 0;
 }
 
+//for later reference: prepping a file for unicode strings
+/*
+bool InitializeEmptyUnicodeINIFile(LPCTSTR pszFileName)
+{
+    //only  initialize if file does not exist
+    if(INVALID_FILE_ATTRIBUTES == ::GetFileAttributes(pszFileName))
+    {
+        // write the Utf-16-LE BOM
+        WORD wBOM = 0xFEFF;
+        DWORD NumberOfBytesWritten = 0;
+
+        HANDLE hFile = ::CreateFile(pszFileName, GENERIC_WRITE, 0, 
+            NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+        ::WriteFile(hFile, &wBOM, sizeof(WORD), &NumberOfBytesWritten, NULL);
+        ::CloseHandle(hFile);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+*/
