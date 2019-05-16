@@ -61,7 +61,7 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 
 //for later reference: prepping a file for unicode strings
-/*
+#if 0
 bool InitializeEmptyUnicodeINIFile(LPCTSTR pszFileName)
 {
     //only  initialize if file does not exist
@@ -71,7 +71,7 @@ bool InitializeEmptyUnicodeINIFile(LPCTSTR pszFileName)
         WORD wBOM = 0xFEFF;
         DWORD NumberOfBytesWritten = 0;
 
-        HANDLE hFile = ::CreateFile(pszFileName, GENERIC_WRITE, 0, 
+        HANDLE hFile = ::CreateFile(pszFileName, GENERIC_WRITE, 0,
             NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
         ::WriteFile(hFile, &wBOM, sizeof(WORD), &NumberOfBytesWritten, NULL);
         ::CloseHandle(hFile);
@@ -82,4 +82,4 @@ bool InitializeEmptyUnicodeINIFile(LPCTSTR pszFileName)
         return false;
     }
 }
-*/
+#endif
