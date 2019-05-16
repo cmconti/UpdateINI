@@ -96,7 +96,7 @@ del "%~dp0\out.txt" > nul 2>&1
 
 echo write unicode char to ascii file
 copy "%~dp0\Test3.ini" "%~dp0\TestOut.ini" > nul 2>&1
-powershell -command "(%exe% -s Section Key1 $([char]0x266B) '%~dp0\TestOut.ini');" > out.txt 2>&1
+powershell -command "(%exe% -s Section Key1 $([char]0x266B) '%~dp0\TestOut.ini');  exit($lastexitcode)" > out.txt 2>&1
 if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test4.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
@@ -109,7 +109,7 @@ del "%~dp0\out.txt" > nul 2>&1
 
 echo write unicode char to unicode file
 copy "%~dp0\Test3Unicode.ini" "%~dp0\TestOut.ini" > nul 2>&1
-powershell -command "(%exe% -s Section Key1 $([char]0x266B) '%~dp0\TestOut.ini');" > out.txt 2>&1
+powershell -command "(%exe% -s Section Key1 $([char]0x266B) '%~dp0\TestOut.ini'); exit($lastexitcode)" > out.txt 2>&1
 if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test5.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
