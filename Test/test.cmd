@@ -10,10 +10,10 @@ del "%~dp0\TestOut.ini" > nul 2>&1
 echo Write Non existant file
 %exe% -s Section Key Value "%~dp0\TestOut.ini"
 if 0 EQU %ERRORLEVEL% (
-    fc "%~dp0\Test1.ini" "%~dp0\TestOut.ini"
+    fc "%~dp0\Test1.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -25,7 +25,7 @@ if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test1.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -37,7 +37,7 @@ if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test2.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -49,20 +49,20 @@ if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test3.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
 del "%~dp0\out.txt" > nul 2>&1
 
-echo missing -s param
+echo invalid flag param
 copy "%~dp0\Test1.ini" "%~dp0\TestOut.ini" > nul 2>&1
-%exe% Section Key2 Value2 "%~dp0\TestOut.ini" > out.txt
-if 0 EQU %ERRORLEVEL% (
+%exe% -x Section Key2 Value2 "%~dp0\TestOut.ini" > out.txt
+if 160 EQU %ERRORLEVEL% (
     fc "%~dp0\Usage.txt" "%~dp0\out.txt" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -71,11 +71,11 @@ del "%~dp0\out.txt" > nul 2>&1
 echo missing param
 copy "%~dp0\Test1.ini" "%~dp0\TestOut.ini" > nul 2>&1
 %exe% -s Section Key2 Value2 > out.txt
-if -1 EQU %ERRORLEVEL% (
+if 160 EQU %ERRORLEVEL% (
     fc "%~dp0\Usage.txt" "%~dp0\out.txt" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -88,7 +88,7 @@ if 123 EQU %ERRORLEVEL% (
     fc "%~dp0\Err123.txt" "%~dp0\out.txt" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -101,7 +101,7 @@ if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test4.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1
@@ -114,7 +114,7 @@ if 0 EQU %ERRORLEVEL% (
     fc "%~dp0\Test5.ini" "%~dp0\TestOut.ini" > nul 2>&1
     if 0 EQU !ERRORLEVEL! SET fail=0
 )
-if %fail% EQU 0 (echo passed) else (echo failed)
+if %fail% EQU 0 (echo    passed) else (echo    **failed**)
 
 set fail=1
 del "%~dp0\TestOut.ini" > nul 2>&1

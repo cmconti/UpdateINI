@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "CmdLine.h"
 
 void Usage()
 {
@@ -11,34 +10,66 @@ void Usage()
 }
 
 //bool InitializeEmptyUnicodeINIFile(LPCSTR pszFileName);
+class cmdLine
+{
+public:
+    cmdLine() : bSet(false), m_pszSection(nullptr), m_pszKey(nullptr), m_pszValue(nullptr), m_pszFile(nullptr) {}
+    bool Parse(int argc, _TCHAR* argv[])
+    {
+        if (argc != 6)
+        {
+            return false;
+        }
+        if ((0 == _tcsnicmp(_T("-s"), argv[1], 2)) || (0 == _tcsnicmp(_T("/s"), argv[1], 2)))
+        {
+            if (0 == _tcslen(argv[2]))
+            {
+                return false;
+            }
+            if (0 == _tcslen(argv[3]))
+            {
+                return false;
+            }
+            if (0 == _tcslen(argv[4]))
+            {
+                return false;
+            }
+            size_t pathlen = _tcslen(argv[5]);
+            if ((0 == pathlen) || (_MAX_PATH < pathlen))
+            {
+                return false;
+            }
+            bSet = true;
+            //could do other path/file validation, but leave that as an exercise for later
+            m_pszSection = argv[2];
+            m_pszKey = argv[3];
+            m_pszValue = argv[4];
+            m_pszFile = argv[5];
+        }
+        else
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool bSet;
+    LPCTSTR m_pszSection;
+    LPCTSTR m_pszKey;
+    LPCTSTR m_pszValue;
+    LPCTSTR m_pszFile;
+};
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    cmdCommandLine Params(argc, argv);
+    cmdLine Params;
 
-    bool bSet = false;
-    int nSwitchS = 0;
-
-    //set
-    if( Params.bGetFlag( ( nSwitchS = Params.iFindFlag( 's' ) ) )|| Params.bGetFlag( ( nSwitchS = Params.iFindFlag( 'S' ) ) ))
+    if (Params.Parse(argc, argv))
     {
-        bSet = true;
-    }
-
-    if (bSet)
-    {
-        Params.bGetFlag( nSwitchS );
-
-        TCHAR* pszSection = Params.cpNextFlagParam();
-        TCHAR* pszKey = Params.cpNextFlagParam();
-        TCHAR* pszValue = Params.cpNextFlagParam();
-        TCHAR* pszFile = Params.cpNextFlagParam();
-
-        if (!pszSection || !pszKey || !pszValue || !pszFile)
-        {
-            Usage();
-            return -1;
-        }
+        LPCTSTR pszSection = Params.m_pszSection;
+        LPCTSTR pszKey = Params.m_pszKey;
+        LPCTSTR pszValue = Params.m_pszValue;
+        LPCTSTR pszFile = Params.m_pszFile;
 
         //TODO: Should I be 'smart' here and try to figure out if the section/key/value are unicode,
         //      make that a command line parameter option, or something else?
@@ -55,6 +86,7 @@ int _tmain(int argc, _TCHAR* argv[])
     else
     {
         Usage();
+        return ERROR_BAD_ARGUMENTS; //TODO: Allow /? without returning error
     }
 
     return 0;
